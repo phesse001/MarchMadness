@@ -23,11 +23,10 @@ int main() {
     sort(resultVector.begin(), resultVector.end());
     vector<Team>::iterator itr2;
     for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
-        cout << itr2->getName() << endl;
+        //cout << itr2->getName() << endl;
     }
-
+    checkCorrectness("D:\\Wilmot\\Documents\\Personal\\Workspace\\March Madness Simulator\\Data\\NCAA Mens BasketBall 2019\\Correct.txt");
 }
-
 
 void createTeams(string teamData) {
     string id, name;
@@ -105,3 +104,102 @@ void populateMatrix(int team1Index, int team2Index, int score1Int, int score2Int
     }
 }
 
+void checkCorrectness(string correctData){
+    /**
+     * True team rankings binned by level in madness competition.
+     */
+    vector<vector<int>> actualLevels;
+    /**
+     * Computed team rankings binned by level in madness competition.
+     */
+    vector<vector<int>> computedLevels;
+    /**
+     * Set contains teams that played in March Madness Competition.
+     */
+    unordered_set<int> teamsInCompetition;
+    /**
+     * True team ranking based upon history.
+     */
+    vector<Team*> actualRanking;
+
+    //TODO: Pull Correct Data.
+    string id;
+    ifstream correct (correctData);
+    
+
+    if(correct.is_open()){
+        unordered_set<Team*> teams;
+        while(getline(correct, id, '\n')){
+            teamsInCompetition.insert(stoi(id));
+            actualRanking.push_back(teamMap.find(stoi(id))->second);
+        }
+        correct.close();
+    }
+    else cout << "Unable to open file";
+
+    //TODO: Create map binned by level for truth {First(1), Second(1), Final Four(2), Elite Eight(4), Sweet Sixteen(8), Top 32(16), All(32)}.
+    bin(&actualRanking, &actualLevels);
+
+    //TODO: Reduce ranking to teams that made it march madness.
+    vector<Team>::iterator fullRankItr;
+    for(fullRankItr = resultVector.end() - 1; fullRankItr != resultVector.begin() - 1 ; --fullRankItr){
+        if(teamsInCompetition.find(teamMap.find(fullRankItr->getId())->second->getId()) != teamsInCompetition.end() ){
+            cleanedResultVector.push_back(teamMap.find(fullRankItr->getId())->second);
+        }
+    }
+
+    //TODO: Create map binned by level for output {First(1), Second(1), Final Four(2), Elite Eight(4), Sweet Sixteen(8), Top 32(16), All(32)}.
+
+    bin(&cleanedResultVector, &computedLevels);
+
+    //TODO: Compare the contents of each bin.
+    double comparisonScore = comparison(&actualLevels, &computedLevels);
+    cout << "Similarity Score: " << to_string(100 * comparisonScore / 64) << endl;
+
+    //TODO: Print ranking to file.
+    ofstream output;
+    output.open("output.txt");
+    if(output.is_open()){
+        output << "Similarity Score: " << to_string(100 * comparisonScore / 64) << endl;
+      for(int i = 0; i < cleanedResultVector.size(); i++ )
+       output << cleanedResultVector.at(i)->toString() << endl;
+    output.close();
+    }
+    else cout << "Unable to open file";
+}
+
+void bin(vector<Team*> *teamVector, vector<vector<int>> *resultVector) {
+    int position = 0;
+    int index = 0;
+    vector<int> levelVector;
+    levelVector.push_back(teamVector->at(index++)->getId());
+    resultVector->push_back(levelVector);
+    while(position <= 5){
+        vector<int> levelVector;
+        for(int i = pow(2,position); i < pow(2,position + 1) ; i++){
+            levelVector.push_back(teamVector->at(index++)->getId());
+        }
+        resultVector->push_back(levelVector);
+        position++;
+    }
+}
+
+double comparison(vector<vector<int>> *v1, vector<vector<int>> *v2){
+    double score = 0;
+    for(int i = 0; i < v1->size(); i++){
+        vector<int> intersection;
+        //set_intersection(v1->at(i).begin(), v1->at(i).end(), v2 ->at(i).begin(), v2->at(i).end(), back_inserter(intersection));
+
+        std::sort(v1->at(i).begin(), v1->at(i).end());
+        std::sort(v2->at(i).begin(), v2->at(i).end());
+
+
+        std::set_intersection(v1->at(i).begin(), v1->at(i).end(),
+                              v2->at(i).begin(), v2->at(i).end(),
+                              std::back_inserter(intersection));
+        for(int i = 0; i < intersection.size(); i++ )
+            cout << intersection.at(i) << endl;
+    score += intersection.size();
+    }
+    return score;
+}

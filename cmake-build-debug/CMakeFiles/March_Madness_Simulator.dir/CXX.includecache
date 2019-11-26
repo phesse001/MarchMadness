@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-D:/Wilmot/Documents/Personal/Workspace/March Madness Simulator/Game.cpp
-Game.h
-D:/Wilmot/Documents/Personal/Workspace/March Madness Simulator/Game.h
-
 D:/Wilmot/Documents/Personal/Workspace/March Madness Simulator/Game.h
 string
 -
@@ -39,10 +35,12 @@ D:/Wilmot/Documents/Personal/Workspace/March Madness Simulator/eigen/Eigen/Core
 D:/Wilmot/Documents/Personal/Workspace/March Madness Simulator/eigen/Eigen/Dense
 Team.h
 D:/Wilmot/Documents/Personal/Workspace/March Madness Simulator/Team.h
-
-D:/Wilmot/Documents/Personal/Workspace/March Madness Simulator/Team.cpp
-Team.h
-D:/Wilmot/Documents/Personal/Workspace/March Madness Simulator/Team.h
+bits/stdc++.h
+-
+iterator
+-
+algorithm
+-
 
 D:/Wilmot/Documents/Personal/Workspace/March Madness Simulator/Team.h
 string

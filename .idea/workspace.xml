@@ -75,6 +75,7 @@
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
         <watch expression="teamMap" language="ObjectiveC" />
+        <watch expression="cleanedResultVector" language="ObjectiveC" />
       </configuration>
     </watches-manager>
   </component>
