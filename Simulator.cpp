@@ -3,10 +3,10 @@
 void populateMatrix(int team1Index, int team2Index, int score1Int, int score2Int);
 
 int main() {
-    //createTeams(string("D:\\Wilmot\\Documents\\Personal\\Workspace\\March Madness Simulator\\Data\\NCAA Mens BasketBall 2019\\TestSetTeams.txt"));
-    //loadGames(string("D:\\Wilmot\\Documents\\Personal\\Workspace\\March Madness Simulator\\Data\\NCAA Mens BasketBall 2019\\TestSetGames.txt"));
-    createTeams(string("D:\\Wilmot\\Documents\\Personal\\Workspace\\March Madness Simulator\\Data\\NCAA Mens BasketBall 2019\\NCAABasketballTeams.txt"));
-    loadGames(string("D:\\Wilmot\\Documents\\Personal\\Workspace\\March Madness Simulator\\Data\\NCAA Mens BasketBall 2019\\NCAABasketballGames.txt"));
+    //createTeams(string("./Data/NCAA Mens BasketBall 2019/TestSetTeams.txt"));
+    //loadGames(string("./Data/NCAA Mens BasketBall 2019/TestSetGames.txt"));
+    createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
+    loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"));
 
     solutionVector = gameMatrix.lu().solve(scores);
 
@@ -25,7 +25,7 @@ int main() {
     for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
         //cout << itr2->getName() << endl;
     }
-    checkCorrectness("D:\\Wilmot\\Documents\\Personal\\Workspace\\March Madness Simulator\\Data\\NCAA Mens BasketBall 2019\\Correct.txt");
+    checkCorrectness("./Data/NCAA Mens BasketBall 2019/Correct.txt");
 }
 
 void createTeams(string teamData) {
