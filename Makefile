@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/research
+CMAKE_SOURCE_DIR = /home/
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/research
+CMAKE_BINARY_DIR = /home/
 
 #=============================================================================
 # Targets provided globally by CMake.
