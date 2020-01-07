@@ -194,8 +194,7 @@ double comparison(vector<vector<int>> *v1, vector<vector<int>> *v2){
         std::set_intersection(v1->at(i).begin(), v1->at(i).end(),
                               v2->at(i).begin(), v2->at(i).end(),
                               std::back_inserter(intersection));
-        for(int i = 0; i < intersection.size(); i++ )
-            cout << intersection.at(i) << endl;
+  
     score += intersection.size();
     }
     return score;
