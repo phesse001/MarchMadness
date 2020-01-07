@@ -30,7 +30,7 @@ int Team::getNumGamesPlayed(){
 }
 
 string Team::toString() {
-    return "Team Name: " + name + " ID: " + to_string(id) + " Number of Games: " + to_string(this->gameCollection.size()) + " Rank: " + to_string(this->rank);
+    return name;
 }
 
 void Team::addRank(double rank){
