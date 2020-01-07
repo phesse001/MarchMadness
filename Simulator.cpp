@@ -3,7 +3,8 @@
 void populateMatrix(int team1Index, int team2Index, int score1Int, int score2Int);
 
 int main() {
-    //createTeams(string("./Data/NCAA Mens BasketBall 2019/TestSetTeams.txt"));
+    //
+    Teams(string("./Data/NCAA Mens BasketBall 2019/TestSetTeams.txt"));
     //loadGames(string("./Data/NCAA Mens BasketBall 2019/TestSetGames.txt"));
     createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
     loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"));
@@ -122,7 +123,7 @@ void checkCorrectness(string correctData){
      */
     vector<Team*> actualRanking;
 
-    //TODO: Pull Correct Data.
+    //Pull Correct Data.
     string id;
     ifstream correct (correctData);
     
@@ -137,10 +138,10 @@ void checkCorrectness(string correctData){
     }
     else cout << "Unable to open file";
 
-    //TODO: Create map binned by level for truth {First(1), Second(1), Final Four(2), Elite Eight(4), Sweet Sixteen(8), Top 32(16), All(32)}.
+    //TCreate map binned by level for truth {First(1), Second(1), Final Four(2), Elite Eight(4), Sweet Sixteen(8), Top 32(16), All(32)}.
     bin(&actualRanking, &actualLevels);
 
-    //TODO: Reduce ranking to teams that made it march madness.
+    //Reduce ranking to teams that made it march madness.
     vector<Team>::iterator fullRankItr;
     for(fullRankItr = resultVector.end() - 1; fullRankItr != resultVector.begin() - 1 ; --fullRankItr){
         if(teamsInCompetition.find(teamMap.find(fullRankItr->getId())->second->getId()) != teamsInCompetition.end() ){
@@ -148,24 +149,12 @@ void checkCorrectness(string correctData){
         }
     }
 
-    //TODO: Create map binned by level for output {First(1), Second(1), Final Four(2), Elite Eight(4), Sweet Sixteen(8), Top 32(16), All(32)}.
-
+    //Create map binned by level for output {First(1), Second(1), Final Four(2), Elite Eight(4), Sweet Sixteen(8), Top 32(16), All(32)}.
     bin(&cleanedResultVector, &computedLevels);
 
-    //TODO: Compare the contents of each bin.
-    double comparisonScore = comparison(&actualLevels, &computedLevels);
-    cout << "Similarity Score: " << to_string(100 * comparisonScore / 64) << endl;
+    //Compare the contents of each bin.
+    comparison(&actualLevels, &computedLevels);
 
-    //TODO: Print ranking to file.
-    ofstream output;
-    output.open("output.txt");
-    if(output.is_open()){
-        output << "Similarity Score: " << to_string(100 * comparisonScore / 64) << endl;
-      for(int i = 0; i < cleanedResultVector.size(); i++ )
-       output << cleanedResultVector.at(i)->toString() << endl;
-    output.close();
-    }
-    else cout << "Unable to open file";
 }
 
 void bin(vector<Team*> *teamVector, vector<vector<int>> *resultVector) {
@@ -184,12 +173,15 @@ void bin(vector<Team*> *teamVector, vector<vector<int>> *resultVector) {
     }
 }
 
-double comparison(vector<vector<int>> *v1, vector<vector<int>> *v2){
+void comparison(vector<vector<int>> *v1, vector<vector<int>> *v2){
     double score = 0;
+    ofstream outFile;
+    outFile.open("output.txt");
+    if(!outFile.is_open()) {
+        cout << "Unable to open file";
+    }
     for(int i = 0; i < v1->size(); i++){
         vector<int> intersection;
-        //set_intersection(v1->at(i).begin(), v1->at(i).end(), v2 ->at(i).begin(), v2->at(i).end(), back_inserter(intersection));
-
         std::sort(v1->at(i).begin(), v1->at(i).end());
         std::sort(v2->at(i).begin(), v2->at(i).end());
 
@@ -197,9 +189,13 @@ double comparison(vector<vector<int>> *v1, vector<vector<int>> *v2){
         std::set_intersection(v1->at(i).begin(), v1->at(i).end(),
                               v2->at(i).begin(), v2->at(i).end(),
                               std::back_inserter(intersection));
-        for(int i = 0; i < intersection.size(); i++ )
-            cout << intersection.at(i) << endl;
+        //write result to output file
+        for(int i = 0; i < intersection.size(); i++ ) {
+            outFile << intersection.at(i) << endl;
+        }
     score += intersection.size();
     }
-    return score;
+    outFile << to_string(100 * score / 64) << endl;
+    outFile.close();
 }
+
