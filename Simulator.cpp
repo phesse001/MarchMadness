@@ -3,8 +3,7 @@
 void populateMatrix(int team1Index, int team2Index, int score1Int, int score2Int);
 
 int main() {
-    //
-    Teams(string("./Data/NCAA Mens BasketBall 2019/TestSetTeams.txt"));
+    //createTeams(string("./Data/NCAA Mens BasketBall 2019/TestSetTeams.txt"));
     //loadGames(string("./Data/NCAA Mens BasketBall 2019/TestSetGames.txt"));
     createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
     loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"));
