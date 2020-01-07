@@ -44,7 +44,7 @@ void loadGames(string gameData);
 
 void checkCorrectness(string correctData);
 
-double bin(vector<Team*> *teamVector, vector<vector<int>> *resultVector);
+void bin(vector<Team*> *teamVector, vector<vector<int>> *resultVector);
 
 double comparison(vector<vector<int>> *v1, vector<vector<int>> *v2);
 #endif //MARCH_MADNESS_SIMULATOR_SIMULATOR_H
