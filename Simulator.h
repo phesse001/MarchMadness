@@ -46,5 +46,5 @@ void checkCorrectness(string correctData);
 
 void bin(vector<Team*> *teamVector, vector<vector<int>> *resultVector);
 
-double comparison(vector<vector<int>> *v1, vector<vector<int>> *v2);
+void comparison(vector<vector<int>> *v1, vector<vector<int>> *v2);
 #endif //MARCH_MADNESS_SIMULATOR_SIMULATOR_H
