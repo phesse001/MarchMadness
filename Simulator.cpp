@@ -9,7 +9,12 @@ void populateMatrix(int team1Index, int team2Index, int team_1_score, int team_2
  * @return
  */
 int main(int argc, char *argv[]){
-    int flag = stoi(argv[1]);
+    if(argc == 1){
+        flag = 0
+    }
+    else{
+        int flag = stoi(argv[1]);
+    }
     createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
     loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"), flag);
     solutionVector = gameMatrix.lu().solve(scores);
