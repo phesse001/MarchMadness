@@ -1,7 +1,5 @@
 #include "Simulator.h"
 
-void populateMatrix(int team1Index, int team2Index, int team_1_score, int team_2_score);
-
 /**
  *
  * @param argc One parameter denoting modifications for team score.
