@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
     //Sort & Print ranking to file.
     ofstream output;
     output.open("output.txt");
-    if(output_names.is_open()){
+    if(output.is_open()){
         sort(resultVector.begin(), resultVector.end());
         vector<Team>::iterator itr2;
         for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
