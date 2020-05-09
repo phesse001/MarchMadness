@@ -1,8 +1,8 @@
 #include "Simulator.h"
 
 int main(){
-    void run(0, "output.txt");
-    void run(1, "output_field.txt");
+    run(0, "output.txt");
+    run(1, "output_field.txt");
 }
 void run(int flag, string path){
     createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
