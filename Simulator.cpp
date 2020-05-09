@@ -1,16 +1,10 @@
 #include "Simulator.h"
 
-/**
- *
- * @param argc One parameter denoting modifications for team score.
- * @param argv 0 - Normal run, 1 - Homefield Advantage, 2 - Season Advantage, 3 - Homefield and Season Advantage
- * @return
- */
 int main(){
     void run(0, "output.txt");
     void run(1, "output_field.txt");
 }
-void run(flag, path){
+void run(int flag, string path){
     createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
     loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"), flag);
     solutionVector = gameMatrix.lu().solve(scores);
