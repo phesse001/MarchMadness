@@ -8,7 +8,7 @@
  */
 int main(int argc, char *argv[]){
     if(argc == 1){
-        flag = 0
+        int flag = 0
     }
     else{
         int flag = stoi(argv[1]);
