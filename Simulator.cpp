@@ -22,16 +22,14 @@ int main(int argc, char *argv[]){
     }
 
     //Sort & Print ranking to file.
-    ofstream output_names;
-    ofstream output_id;
-    output_names.open("output_names.txt");
-    output_id.open("output_id.txt");
-    if(output_names.is_open() && output_id.is_open()){
+    ofstream output;
+    output.open("output.txt");
+    if(output_names.is_open()){
         sort(resultVector.begin(), resultVector.end());
         vector<Team>::iterator itr2;
         for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
             output_names << itr2->getName() << endl;
-            output_id << itr2 ->getId() << endl;
+            output << itr2 ->getId() + " " + getName() << endl;
         }
         output_names.close();
     }
