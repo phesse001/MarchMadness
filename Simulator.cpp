@@ -6,11 +6,11 @@
  * @param argv 0 - Normal run, 1 - Homefield Advantage, 2 - Season Advantage, 3 - Homefield and Season Advantage
  * @return
  */
-int main(int argc, char *argv[]){
-    int flag = 0;
-    if(argc < 2){
-       flag = stoi(argv[1]);
-    }
+int main(){
+    void run(0, "output.txt");
+    void run(1, "output_field.txt");
+}
+void run(flag, path){
     createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
     loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"), flag);
     solutionVector = gameMatrix.lu().solve(scores);
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
 
     //Sort & Print ranking to file.
     ofstream output;
-    output.open("output.txt");
+    output.open(path);
     if(output.is_open()){
         sort(resultVector.begin(), resultVector.end());
         vector<Team>::iterator itr2;
@@ -33,9 +33,7 @@ int main(int argc, char *argv[]){
         output.close();
     }
     else cout << "Unable to open file";
-
 }
-
 void createTeams(string teamData) {
     string id, name;
     ifstream teams (teamData);
