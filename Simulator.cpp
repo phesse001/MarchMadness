@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
         sort(resultVector.begin(), resultVector.end());
         vector<Team>::iterator itr2;
         for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
-            output << itr2->getId() << " " << itr2->getName() << endl;
+            output << itr2->getId() << itr2->getName() << endl;
         }
         output.close();
     }
@@ -43,7 +43,6 @@ void createTeams(string teamData) {
         while (getline(teams, id, ',')){
             getline(teams, name, '\n');
             int idNum = stoi(id);
-            remove(name.begin(), name.end(),' ');
             Team* tempTeam = new Team(name, idNum);
             teamCollection.push_back(tempTeam);
             teamMap.insert(pair<int, Team*>(idNum, tempTeam));
