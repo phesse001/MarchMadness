@@ -28,10 +28,10 @@ int main(int argc, char *argv[]){
         sort(resultVector.begin(), resultVector.end());
         vector<Team>::iterator itr2;
         for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
-            output_names << itr2->getName() << endl;
+            output << itr2->getName() << endl;
             output << itr2 ->getId() + " " + getName() << endl;
         }
-        output_names.close();
+        output.close();
     }
     else cout << "Unable to open file";
 
