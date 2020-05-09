@@ -7,11 +7,9 @@
  * @return
  */
 int main(int argc, char *argv[]){
-    if(argc == 1){
-        int flag = 0;
-    }
-    else{
-        int flag = stoi(argv[1]);
+    int flag = 0;
+    if(argc < 2){
+       flag = stoi(argv[1]);
     }
     createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
     loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"), flag);
