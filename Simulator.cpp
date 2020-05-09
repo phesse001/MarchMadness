@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
         sort(resultVector.begin(), resultVector.end());
         vector<Team>::iterator itr2;
         for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
-            output << itr2->getId() + " " + itr2->getName() << endl;
+            output << itr2->getId() << " " << itr2->getName() << endl;
         }
         output.close();
     }
