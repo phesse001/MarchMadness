@@ -1,16 +1,18 @@
 #include "Simulator.h"
 
-void populateMatrix(int team1Index, int team2Index, int score1Int, int score2Int);
+void populateMatrix(int team1Index, int team2Index, int team_1_score, int team_2_score);
 
-int main() {
-    //createTeams(string("./Data/NCAA Mens BasketBall 2019/TestSetTeams.txt"));
-    //loadGames(string("./Data/NCAA Mens BasketBall 2019/TestSetGames.txt"));
+/**
+ *
+ * @param argc One parameter denoting modifications for team score.
+ * @param argv 0 - Normal run, 1 - Homefield Advantage, 2 - Season Advantage, 3 - Homefield and Season Advantage
+ * @return
+ */
+int main(int argc, char *argv[]){
+    int flag = stoi(argv[1]);
     createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
-    loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"));
-
+    loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"), flag);
     solutionVector = gameMatrix.lu().solve(scores);
-
-
 
     map<int, Team*>::iterator itr;
     for(itr = teamMap.begin(); itr != teamMap.end(); ++itr){
@@ -18,14 +20,22 @@ int main() {
         resultVector.push_back(*(itr->second));
     }
 
-    //sort Teams by rank
-
-    sort(resultVector.begin(), resultVector.end());
-    vector<Team>::iterator itr2;
-    for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
-        //cout << itr2->getName() << endl;
+    //Sort & Print ranking to file.
+    ofstream output_names;
+    ofstream output_id;
+    output_names.open("output_names.txt");
+    output_id.open("output_id.txt");
+    if(output_names.is_open() && output_id.is_open()){
+        sort(resultVector.begin(), resultVector.end());
+        vector<Team>::iterator itr2;
+        for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
+            output_names << itr2->getName() << endl;
+            output_id << itr2 ->getId() << endl;
+        }
+        output_names.close();
     }
-    checkCorrectness("./Data/NCAA Mens BasketBall 2019/Correct.txt");
+    else cout << "Unable to open file";
+
 }
 
 void createTeams(string teamData) {
@@ -46,7 +56,7 @@ void createTeams(string teamData) {
     else cout << "Unable to open file";
 }
 
-void loadGames(string gameData){
+void loadGames(string gameData, int flag) {
     gameMatrix = Matrix<double, Dynamic, Dynamic>::Zero(numTeams , numTeams);
     scores = VectorXd::Zero(numTeams);
 
@@ -64,18 +74,28 @@ void loadGames(string gameData){
             getline(games, score2, ' ');
 
             int daysInt = stoi(days);
-            int team1Index = stoi(team1);
-            int team2Index = stoi(team2);
-            int score1Int = stoi(score1);
-            int score2Int = stoi(score2);
-            Game tempGame(daysInt, teamMap.at(team1Index), teamMap.at(team2Index), score1Int, score2Int);
-            teamMap.at(team1Index)->addGame(&tempGame);
-            teamMap.at(team2Index)->addGame(&tempGame);
-            //gameCollection.push_back(&tempGame);
+            int team_1_Id = stoi(team1);
+            int team_2_Id = stoi(team2);
+            int team_1_score = stoi(score1);
+            int team_2_score = stoi(score2);
+            Game tempGame(daysInt, teamMap.at(team_1_Id), teamMap.at(team_2_Id), team_1_score, team_2_score);
+            teamMap.at(team_1_Id)->addGame(&tempGame);
+            teamMap.at(team_2_Id)->addGame(&tempGame);
             numGamesPlayed++;
 
-
-            populateMatrix(team1Index, team2Index, score1Int, score2Int);
+            /*
+             * Edit game score based on flag.
+             * flag = 1: 4 is added to home team score
+             */
+            if(flag == 1){
+                if(stoi(field1) == 1){
+                    team_1_score += 4;
+                }
+                if(stoi(field2) == 1){
+                    team_2_score += 4;
+                }
+            }
+            populateMatrix(team_1_Id, team_2_Id, team_1_score, team_2_score);
             for(int i = 0; i < numTeams; i++){
                 gameMatrix.row(numTeams - 1).col(i) << 1;
             }
@@ -85,101 +105,22 @@ void loadGames(string gameData){
     else cout << "Unable to open file";
 }
 
-void populateMatrix(int team1Index, int team2Index, int score1Int, int score2Int) {
+void populateMatrix(int team1Index, int team2Index, int team_1_score, int team_2_score) {
     gameMatrix.row(team1Index - 1 ).col(team2Index - 1) << -1;
     gameMatrix.row(team2Index -1 ).col(team1Index -1) <<  -1;
     gameMatrix.row(team1Index -1 ).col(team1Index -1) <<  teamMap.at(team1Index)->getNumGamesPlayed();
     gameMatrix.row(team2Index -1 ).col(team2Index -1) <<  teamMap.at(team2Index)->getNumGamesPlayed();
-    if(score1Int > score2Int){
+    if(team_1_score > team_2_score){
         int temp = scores.row(team1Index - 1).value();
-        scores.row(team1Index - 1 ) << temp + (score1Int - score2Int);
+        scores.row(team1Index - 1 ) << temp + (team_1_score - team_2_score);
         temp = scores.row(team2Index - 1).value();
-        scores.row(team2Index - 1 ) << temp + (score2Int - score1Int);
+        scores.row(team2Index - 1 ) << temp + (team_2_score - team_1_score);
     }
     else{
         int temp = scores.row(team2Index - 1).value();
-        scores.row(team2Index - 1 ) << temp + (score1Int - score2Int);
+        scores.row(team2Index - 1 ) << temp + (team_1_score - team_2_score);
         temp = scores.row(team1Index - 1).value();
-        scores.row(team1Index - 1 ) << temp + (score2Int - score1Int);
-    }
-}
-
-void checkCorrectness(string correctData){
-    /**
-     * True team rankings binned by level in madness competition.
-     */
-    vector<vector<int>> actualLevels;
-    /**
-     * Computed team rankings binned by level in madness competition.
-     */
-    vector<vector<int>> computedLevels;
-    /**
-     * Set contains teams that played in March Madness Competition.
-     */
-    unordered_set<int> teamsInCompetition;
-    /**
-     * True team ranking based upon history.
-     */
-    vector<Team*> actualRanking;
-
-    //Pull Correct Data.
-    string id;
-    ifstream correct (correctData);
-    
-
-    if(correct.is_open()){
-        unordered_set<Team*> teams;
-        while(getline(correct, id, '\n')){
-            teamsInCompetition.insert(stoi(id));
-            actualRanking.push_back(teamMap.find(stoi(id))->second);
-        }
-        correct.close();
-    }
-    else cout << "Unable to open file";
-
-    //Create map binned by level for truth {First(1), Second(1), Final Four(2), Elite Eight(4), Sweet Sixteen(8), Top 32(16), All(32)}.
-    bin(&actualRanking, &actualLevels);
-
-    //Reduce ranking to teams that made it march madness.
-    vector<Team>::iterator fullRankItr;
-    for(fullRankItr = resultVector.end() - 1; fullRankItr != resultVector.begin() - 1 ; --fullRankItr){
-        if(teamsInCompetition.find(teamMap.find(fullRankItr->getId())->second->getId()) != teamsInCompetition.end() ){
-            cleanedResultVector.push_back(teamMap.find(fullRankItr->getId())->second);
-        }
-    }
-
-    //Create map binned by level for output {First(1), Second(1), Final Four(2), Elite Eight(4), Sweet Sixteen(8), Top 32(16), All(32)}.
-    bin(&cleanedResultVector, &computedLevels);
-
-    //Compare the contents of each bin.
-    double comparisonScore = comparison(&actualLevels, &computedLevels);
-    cout << "Similarity Score: " << to_string(100 * comparisonScore / 64) << endl;
-
-    //Print ranking to file.
-    ofstream output;
-    output.open("output.txt");
-    if(output.is_open()){
-        output << "Similarity Score: " << to_string(100 * comparisonScore / 64) << endl;
-      for(int i = 0; i < cleanedResultVector.size(); i++ )
-       output << cleanedResultVector.at(i)->toString() << endl;
-    output.close();
-    }
-    else cout << "Unable to open file";
-}
-
-void bin(vector<Team*> *teamVector, vector<vector<int>> *resultVector) {
-    int position = 0;
-    int index = 0;
-    vector<int> levelVector;
-    levelVector.push_back(teamVector->at(index++)->getId());
-    resultVector->push_back(levelVector);
-    while(position <= 5){
-        vector<int> levelVector;
-        for(int i = pow(2,position); i < pow(2,position + 1) ; i++){
-            levelVector.push_back(teamVector->at(index++)->getId());
-        }
-        resultVector->push_back(levelVector);
-        position++;
+        scores.row(team1Index - 1 ) << temp + (team_2_score - team_1_score);
     }
 }
 
@@ -190,13 +131,11 @@ double comparison(vector<vector<int>> *v1, vector<vector<int>> *v2){
         std::sort(v1->at(i).begin(), v1->at(i).end());
         std::sort(v2->at(i).begin(), v2->at(i).end());
 
-
         std::set_intersection(v1->at(i).begin(), v1->at(i).end(),
                               v2->at(i).begin(), v2->at(i).end(),
                               std::back_inserter(intersection));
-  
-    score += intersection.size();
+
+        score += intersection.size();
     }
     return score;
 }
-
