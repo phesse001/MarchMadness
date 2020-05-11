@@ -1,7 +1,7 @@
 #include "Simulator.h"
 
 int main(int argc, char *argv[]){
-    int home_field_advantage_start = stoi(argv[1]);
+    int home_field_advantage = stoi(argv[1]);
     string file_name = argv[2];
     
     run(home_field_advantage, file_name);
