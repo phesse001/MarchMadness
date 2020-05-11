@@ -1,12 +1,14 @@
 #include "Simulator.h"
 
-int main(){
-    run(0, "output.txt");
-    run(1, "output_field.txt");
+int main(int argc, char *argv[]){
+    home_field_advantage_start = stoi(argv[1]);
+    file_name = argv[2];
+    
+    run(home_field_advantage, file_name);
 }
-void run(int flag, string path){
+void run(int home_field_advantage, string path){
     createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
-    loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"), flag);
+    loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"), home_field_advantage);
     solutionVector = gameMatrix.lu().solve(scores);
 
     map<int, Team*>::iterator itr;
@@ -45,7 +47,7 @@ void createTeams(string teamData) {
     else cout << "Unable to open file";
 }
 
-void loadGames(string gameData, int flag) {
+void loadGames(string gameData, int home_field_advantage) {
     gameMatrix = Matrix<double, Dynamic, Dynamic>::Zero(numTeams , numTeams);
     scores = VectorXd::Zero(numTeams);
 
@@ -76,14 +78,13 @@ void loadGames(string gameData, int flag) {
              * Edit game score based on flag.
              * flag = 1: 4 is added to home team score
              */
-            if(flag == 1){
-                if(stoi(field1) == 1){
-                    team_1_score += 4;
-                }
-                if(stoi(field2) == 1){
-                    team_2_score += 4;
-                }
+            if(stoi(field1) == 1){
+                team_1_score += home_field_advantage;
             }
+            if(stoi(field2) == 1){
+                team_2_score += home_field_advantage;
+            }
+            
             populateMatrix(team_1_Id, team_2_Id, team_1_score, team_2_score);
             for(int i = 0; i < numTeams; i++){
                 gameMatrix.row(numTeams - 1).col(i) << 1;
