@@ -17,18 +17,11 @@ void run(int home_field_advantage, string path){
         resultVector.push_back(*(itr->second));
     }
 
-    //Sort & Print ranking to file.
-    ofstream output;
-    output.open(path);
-    if(output.is_open()){
-        sort(resultVector.begin(), resultVector.end());
-        vector<Team>::iterator itr2;
-        for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
-            output << itr2->getId() << itr2->getName() << endl;
-        }
-        output.close();
-    }
-    else cout << "Unable to open file";
+     sort(resultVector.begin(), resultVector.end());
+     vector<Team>::iterator itr2;
+     for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
+        cout << itr2->getId() << itr2->getName() << endl;
+     }
 }
 void createTeams(string teamData) {
     string id, name;
