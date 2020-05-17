@@ -1,12 +1,10 @@
 #include "Simulator.h"
 
 int main(int argc, char *argv[]){
-    int home_field_advantage = stoi(argv[1]);
-    string file_name = argv[2];
-    
-    run(home_field_advantage, file_name);
+    int home_field_advantage = stoi(argv[1]);    
+    run(home_field_advantage);
 }
-void run(int home_field_advantage, string path){
+void run(int home_field_advantage){
     createTeams(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballTeams.txt"));
     loadGames(string("./Data/NCAA Mens BasketBall 2019/NCAABasketballGames.txt"), home_field_advantage);
     solutionVector = gameMatrix.lu().solve(scores);
