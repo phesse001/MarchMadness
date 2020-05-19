@@ -40,8 +40,9 @@ int numTeams;
 void createTeams(string teamData);
 
 void loadGames(string gameData, int flag);
+
 void run(int flag);
+
 void populateMatrix(int team_1_Id, int team_2_Id, int team_1_score, int team_2_score);
 
-double comparison(vector<vector<int>> *v1, vector<vector<int>> *v2);
 #endif //MARCH_MADNESS_SIMULATOR_SIMULATOR_H
