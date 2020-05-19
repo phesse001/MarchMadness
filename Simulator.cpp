@@ -104,19 +104,3 @@ void populateMatrix(int team1Index, int team2Index, int team_1_score, int team_2
         scores.row(team1Index - 1 ) << temp + (team_2_score - team_1_score);
     }
 }
-
-double comparison(vector<vector<int>> *v1, vector<vector<int>> *v2){
-    double score = 0;
-    for(int i = 0; i < v1->size(); i++){
-        vector<int> intersection;
-        std::sort(v1->at(i).begin(), v1->at(i).end());
-        std::sort(v2->at(i).begin(), v2->at(i).end());
-
-        std::set_intersection(v1->at(i).begin(), v1->at(i).end(),
-                              v2->at(i).begin(), v2->at(i).end(),
-                              std::back_inserter(intersection));
-
-        score += intersection.size();
-    }
-    return score;
-}
