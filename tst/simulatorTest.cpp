@@ -9,8 +9,8 @@ protected:
   //runs only once
   static void SetUpTestCase()
   {
-    createTeams("/workspace/madness/data/TestSetTeams.txt");
-    loadGames("/workspace/madness/data/TestSetGames.txt",0,false);
+    createTeams("../data/TestSetTeams.txt");
+    loadGames("../data/TestSetGames.txt",0,false);
   }
   //runs for every test case
   SimulatorTest() {
