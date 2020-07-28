@@ -110,7 +110,7 @@ TEST_F(GameTest, scores)
 {
 	int s1 = game->getScore1();
 	int s2 = game->getScore2();
-	EXPECT_EQ(s1,50);
+	EXPECT_EQ(s1,5);
 	EXPECT_EQ(s2,51);
 }
 
