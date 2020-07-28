@@ -1,6 +1,6 @@
 set(BINARY ${CMAKE_PROJECT_NAME}_tst)
 
-add_executable(${BINARY} simulatorTest.cpp)
+add_executable(${BINARY} testSuite.cpp)
 
 add_test(NAME ${BINARY} COMMAND ${BINARY})
 

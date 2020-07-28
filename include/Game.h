@@ -41,7 +41,9 @@ public:
      * Returns int representing location of game. 1=home, -1=away, 0=neutral.
      * @return 1=home, -1=away, 0=neutral.
      */
-    int getLocation();
+    int getScore1();
+
+    int getScore2();
 
 
 private:
